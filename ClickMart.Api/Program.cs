@@ -1,9 +1,14 @@
+using ClickMart.Api.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Registrando o DAO para injeção de dependência
+builder.Services.AddScoped<ProductDAO>();
+
+// Adicionando suporte ao Swagger para testar a API
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
