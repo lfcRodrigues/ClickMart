@@ -1,0 +1,6 @@
+@ClickMart.API_HostAddress = http://localhost:5215
+
+GET {{ClickMart.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
