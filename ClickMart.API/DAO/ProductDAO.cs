@@ -61,5 +61,56 @@ namespace ClickMart.API.DAO
 
             return list;
         }
+
+        public int UpdateProduct(ProductDTO product)
+        {
+            using var conn = DbConnectionFactory.GetConnection();
+            using var cmd = new SqlCommand("UpdateProduct", (SqlConnection)conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@Id", product.Id);
+            cmd.Parameters.AddWithValue("@Identifier", product.Identifier);
+            cmd.Parameters.AddWithValue("@Name", product.Name);
+            cmd.Parameters.AddWithValue("@Price", product.Price);
+            cmd.Parameters.AddWithValue("@Description", product.Description);
+            cmd.Parameters.AddWithValue("@Category", product.Category);
+            cmd.Parameters.AddWithValue("@PublishDate", product.PublishDate);
+            cmd.Parameters.AddWithValue("@Image", product.Image);
+
+            conn.Open();
+            return cmd.ExecuteNonQuery();
+        }
+
+        public int DeleteProduct(int id)
+        {
+            using var conn = DbConnectionFactory.GetConnection();
+            using var cmd = new SqlCommand("DeleteProduct", (SqlConnection)conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@Id", id);
+
+            conn.Open();
+            return cmd.ExecuteNonQuery();
+        }
+
+        public int DeleteProductByIdentifier(string identifier)
+        {
+            using var conn = DbConnectionFactory.GetConnection();
+            using var cmd = new SqlCommand("DeleteProductByIdentifier", (SqlConnection)conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@Identifier", identifier);
+
+            conn.Open();
+            return cmd.ExecuteNonQuery();
+        }
+
+
     }
 }

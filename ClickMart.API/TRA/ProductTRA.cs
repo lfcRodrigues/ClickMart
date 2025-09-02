@@ -20,5 +20,33 @@ namespace ClickMart.API.TRA
         {
             return _dao.GetAllProducts();
         }
+
+        public int UpdateProduct(ProductDTO dto)
+        {
+            if (dto.Id <= 0)
+                throw new ArgumentException("Product Id is required for update");
+
+            if (dto.Price <= 0)
+                throw new ArgumentException("Price must be greater than zero");
+
+            return _dao.UpdateProduct(dto);
+        }
+
+        public int DeleteProduct(int id)
+        {
+            if (id <= 0)
+                throw new ArgumentException("Product Id is required for delete");
+
+            return _dao.DeleteProduct(id);
+        }
+
+        public int DeleteProduct(string identifier)
+        {
+            if (string.IsNullOrWhiteSpace(identifier))
+                throw new ArgumentException("Identifier is required for delete");
+
+            return _dao.DeleteProductByIdentifier(identifier);
+        }
+
     }
 }
