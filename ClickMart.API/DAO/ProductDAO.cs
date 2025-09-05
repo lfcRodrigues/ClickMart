@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using ClickMart.API.DAO;
 using ClickMart.API.DTO;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using ClickMart.API.Models;
 
 namespace ClickMart.API.DAO
