@@ -2,6 +2,7 @@
 using ClickMart.API.DAO;
 using ClickMart.API.DTO;
 using System.Data.SqlClient;
+using ClickMart.API.Models;
 
 namespace ClickMart.API.DAO
 {
@@ -62,7 +63,7 @@ namespace ClickMart.API.DAO
             return list;
         }
 
-        public int UpdateProduct(ProductDTO product)
+        public int UpdateProduct(Product product)
         {
             using var conn = DbConnectionFactory.GetConnection();
             using var cmd = new SqlCommand("UpdateProduct", (SqlConnection)conn)
@@ -111,6 +112,28 @@ namespace ClickMart.API.DAO
             return cmd.ExecuteNonQuery();
         }
 
+        public Product? GetProductByIdentifier(string identifier)
+        {
+            Product? product = null;
+            using var conn = DbConnectionFactory.GetConnection();
+            using (SqlCommand cmd = new SqlCommand("GetProductByIdentifier", (SqlConnection)conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Identifier", identifier);
+                conn.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        product = new Product
+                        {
+                            Identifier = reader.GetString(reader.GetOrdinal("Identifier")),
+                        };
+                    }
+                }
+            }
+            return product;
+        }
 
     }
 }
