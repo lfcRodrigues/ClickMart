@@ -1,6 +1,7 @@
 ﻿using ClickMart.API.DAO;
 using ClickMart.API.DTO;
 using ClickMart.API.Models;
+using Microsoft.Data.SqlClient;
 
 namespace ClickMart.API.TRA
 {
@@ -8,13 +9,13 @@ namespace ClickMart.API.TRA
     {
         private readonly ProductDAO _dao = new();
 
-        public int InsertProduct(ProductDTO dto)
+        public int InsertProduct(ProductDTO productDTO)
         {
             // Regras de negócio poderiam ser aplicadas aqui (ex: validação de preço > 0)
-            if (dto.Price <= 0)
+            if (productDTO.Price <= 0)
                 throw new ArgumentException("Price must be greater than zero");
 
-            return _dao.InsertProduct(dto);
+            return _dao.InsertProduct(productDTO);
         }
 
         public List<ProductDTO> GetAllProducts()
@@ -27,16 +28,9 @@ namespace ClickMart.API.TRA
             // Verifica se o produto existe usando o identificador
             Product existingProduct = _dao.GetProductByIdentifier(productDTO.Identifier);
             if (existingProduct == null)
-                throw new ArgumentException("Product not found with the given identifier.");
+                throw new ArgumentException("Product not found with the given identifier or it doesn't exist.");
 
-            if (string.IsNullOrWhiteSpace(productDTO.Identifier))
-                throw new ArgumentException("Identifier must be sent.");
-
-            // Atualiza os dados do produto existente
-            existingProduct.Name = productDTO.Name;
-            existingProduct.PublishDate = productDTO.PublishDate;
-
-            return _dao.UpdateProduct(existingProduct);
+            return _dao.UpdateProduct(productDTO);
         }
 
         public int DeleteProduct(int id)

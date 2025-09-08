@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ClickMart.API.DTO;
 using ClickMart.API.TRA;
+using ClickMart.API.Mapper;
+using ClickMart.API.Models;
 
 namespace ClickMart.Api.Controllers
 {
@@ -10,13 +12,16 @@ namespace ClickMart.Api.Controllers
     {
         private readonly ProductTRA _tra = new();
         public string Identifier { get; set; } = string.Empty;
+        ProductMapper map = new ProductMapper();
 
         [HttpPost("insert")]
-        public IActionResult Insert([FromBody] ProductDTO productDto)
+        public IActionResult Insert([FromBody] Product product)
         {
+            
             try
             {
-                var result = _tra.InsertProduct(productDto);
+                ProductDTO productDTO = map.ProductToDTO(product);
+                var result = _tra.InsertProduct(productDTO);
                 return Ok(new { success = true, rowsAffected = result });
             }
             catch (Exception ex)
@@ -33,16 +38,17 @@ namespace ClickMart.Api.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update([FromBody] ProductDTO productDto)
+        public IActionResult Update([FromBody] UpdateProduct updateProduct)
         {
             try
             {
-                var result = _tra.UpdateProduct(productDto);
+                ProductDTO productDTO = map.ProductToDTO(updateProduct);
+                var result = _tra.UpdateProduct(productDTO);
                 return Ok(new { success = true, rowsAffected = result });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = "Update Sucessfull" });
+                return BadRequest(new { success = false, message = "Update Fail" });
             }
         }
 

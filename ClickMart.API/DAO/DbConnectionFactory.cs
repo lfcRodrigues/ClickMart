@@ -1,5 +1,5 @@
-﻿using System.Data;
-using System.Data.SqlClient;
+﻿﻿using System.Data;
+using Microsoft.Data.SqlClient;
 
 namespace ClickMart.API.DAO
 {

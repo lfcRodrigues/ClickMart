@@ -63,7 +63,7 @@ namespace ClickMart.API.DAO
             return list;
         }
 
-        public int UpdateProduct(Product product)
+        public int UpdateProduct(ProductDTO productDTO)
         {
             using var conn = DbConnectionFactory.GetConnection();
             using var cmd = new SqlCommand("UpdateProduct", (SqlConnection)conn)
@@ -71,14 +71,13 @@ namespace ClickMart.API.DAO
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@Id", product.Id);
-            cmd.Parameters.AddWithValue("@Identifier", product.Identifier);
-            cmd.Parameters.AddWithValue("@Name", product.Name);
-            cmd.Parameters.AddWithValue("@Price", product.Price);
-            cmd.Parameters.AddWithValue("@Description", product.Description);
-            cmd.Parameters.AddWithValue("@Category", product.Category);
-            cmd.Parameters.AddWithValue("@PublishDate", product.PublishDate);
-            cmd.Parameters.AddWithValue("@Image", product.Image);
+            cmd.Parameters.AddWithValue("@Id", productDTO.Id);
+            cmd.Parameters.AddWithValue("@Identifier", productDTO.Identifier);
+            cmd.Parameters.AddWithValue("@Name", productDTO.Name);
+            cmd.Parameters.AddWithValue("@Price", productDTO.Price);
+            cmd.Parameters.AddWithValue("@Description", productDTO.Description);
+            cmd.Parameters.AddWithValue("@Category", productDTO.Category);
+            cmd.Parameters.AddWithValue("@Image", productDTO.Image);
 
             conn.Open();
             return cmd.ExecuteNonQuery();
