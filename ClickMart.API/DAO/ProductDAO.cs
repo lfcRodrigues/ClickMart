@@ -49,7 +49,9 @@ namespace ClickMart.API.DAO
                     Name = reader.GetString(reader.GetOrdinal("Name")),
                     Price = reader.GetDecimal(reader.GetOrdinal("Price")),
                     Description = reader.GetString(reader.GetOrdinal("Description")),
-                    Category = reader.GetString(reader.GetOrdinal("Category")),
+                    Category = reader.IsDBNull(reader.GetOrdinal("Category"))
+                        ? (int?)null
+                        : reader.GetInt32(reader.GetOrdinal("Category")),
                     PublishDate = reader.GetDateTime(reader.GetOrdinal("PublishDate")),
                     Image = reader.GetString(reader.GetOrdinal("Image")),
                     CreationDate = reader.GetDateTime(reader.GetOrdinal("CreationDate")),

@@ -1,5 +1,6 @@
 ﻿using ClickMart.API.DAO;
 using ClickMart.API.DTO;
+using ClickMart.API.Enum;
 using ClickMart.API.Models;
 using Microsoft.Data.SqlClient;
 
@@ -14,6 +15,14 @@ namespace ClickMart.API.TRA
             // Regras de negócio poderiam ser aplicadas aqui (ex: validação de preço > 0)
             if (productDTO.Price <= 0)
                 throw new ArgumentException("Price must be greater than zero");
+
+            Product existingProduct = _dao.GetProductByIdentifier(productDTO.Identifier);
+
+            if (!string.IsNullOrEmpty(existingProduct.Identifier))
+                throw new ArgumentException("There is already a Product with that identifier.");
+
+            if (!productDTO.Category.HasValue && System.Enum.IsDefined(typeof(Category), productDTO.Category.Value))
+                throw new Exception("The value entered in the CAtegory field does not exist in the list.");
 
             return _dao.InsertProduct(productDTO);
         }
